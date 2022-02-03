@@ -1,0 +1,192 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>UrbanMuse Demo</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
+  <link href="app.css" media="screen" rel="stylesheet" type="text/css" />
+
+  <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+  <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <script src="semantic/dist/semantic.min.js"></script>
+
+  <script src="semantic/dist/components/dropdown.js"></script>
+  <link rel="stylesheet" type="text/css" href="semantic/dist/components/dropdown.min.css">
+  <!-- Include cartodb.js Library -->
+  <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.0/dist/leaflet.css" /> -->
+  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+  <script src="https://libs.cartocdn.com/carto.js/v4.2.0/carto.min.js"></script>
+
+  <!-- SQL API aid -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!-- CUSTOM SCRIPTS -->
+  <script src="js/sidebar.js"></script>
+  <script src="js/helper.js"></script>
+  <script src="js/range.js"></script>
+  <script src="js/rangetwoway.js"></script>
+  <script src="js/jquery.nstSlider.min.js"></script>
+
+
+  <!-- CUSTOM CSS -->
+  <link rel="stylesheet" type="text/css" href="css/custom.css">
+  <link rel="stylesheet" type="text/css" href="css/range.css">
+  <link rel="stylesheet" type="text/css" href="css/rangetwoway.css">
+  <link rel="stylesheet" type="text/css" href="css/jquery.nstSlider.css">
+
+    <!-- Mapbox searchbar -->
+
+    <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
+
+</head>
+
+<body>
+
+<div class="pusher">
+<!-- TITLE BAR AND MENU SIDEBAR-->
+<div class='app-title'>
+  <h1>Urban Muse Demo</h1>
+</div>
+<div class='app-menu'>
+  <div class='app-icon open button'>
+    <nav role="navigation">
+      <div id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </div>
+</div>
+
+
+<!-- MAP -->
+<div class='fullSize' id='map'>
+  <div class="ui active dimmer">
+      <div class="ui large text loader">Loading</div>
+    </div>
+</div>
+</div>
+
+<!-- RIGHT SIDE TOOLBAR -->
+<div id='toolbar'>
+  <!-- TABS FOR ZONING TYPES -->
+  <div class="ui top attached tabular menu">
+    <a class="active item" data-tab="m_c">Manufacturing and Commercial</a>
+    <a class="item" data-tab="resi">Residential</a>
+  </div>
+  <div class="ui bottom attached active tab segment" data-tab="m_c">
+    <!-- FILTERS FOR M AND C -->
+    <div class='widget-content mc'>
+      <div class ='mc filters'>
+        <p>
+          <b class='wisconsin'> Filters</b>
+          <h5>Zone Type</h5>
+          <div class="ui form">
+            <div class="grouped fields"></div>
+          </div>
+        </p>
+      </div>
+      <div class = 'mc weights'>
+        <p>
+          <b class='wisconsin'> Weights</b>
+        </p>
+      </div>
+      <span class ='mc calculate'></span>
+      <span class = "exportSection mc"></span>
+   </div>
+
+    <br>
+    <br>
+
+    <div>
+      <span><b class='wisconsin'> Top Lots</b></span>
+      <input value=10  id="topLots" type="number" pattern="[0-9]+">
+    </div>
+    <table class="ui celled very compact table">
+    <thead>
+      <tr>
+      <th>Score</th><th>Address</th>
+    </tr></thead>
+    <tbody id='topTen'>
+    </tbody>
+    </table>
+  </div>
+  <div class="ui bottom attached tab segment" data-tab="resi">
+      <!-- FILTERS FOR RESIDENTIAL-->
+      <div class='widget-content resi'>
+        <div class ='resi filters'>
+          <p>
+            <b class='wisconsin'> Filters</b>
+            <h5>Higher FAR Residential Options</h5>
+            <div class="resi checkbox"></div>
+          </p>
+        </div>
+        <div class = 'resi weights'>
+          <p>
+            <b class='wisconsin'> Weights</b>
+          </p>
+        </div>
+        <span class ='resi calculate'></span>
+        <span class = "exportSection resi"></span>
+
+      <br>
+      <br>
+
+      <div>
+        <span><b class='wisconsin'> Top Lots</b></span>
+        <input class= 'resi' value=10  id="topLots" type="number" pattern="[0-9]+">
+      </div>
+      <table class="ui celled very compact table resi">
+      <thead>
+        <tr class="resi">
+        <th>Score</th><th>Address</th>
+      </tr></thead>
+      <tbody id='topTen' class='resi'>
+      </tbody>
+      </table>
+  </div>
+</div>
+
+
+<!-- PLACEHOLDER FOR TAX LOT INFO PANEL TO COME FROM RIGHT SIDE -->
+<div class="ui right sidebar popout">
+  <p style="color: #fff;">Placeholder</p>
+</div>
+
+<!-- LEFT LAYER SELECTOR SIDEBAR -->
+<div class="ui sidebar menu inverted vertical menu">
+  <h1>Select Layers</h1>
+  <div class = "layerSelector">
+   <p><b class="wisconsin"><h4>Zoning Context</h4></b></p>
+   <div class= "layerSelector" id='zoning_context'></div>
+
+   <p><b class="wisconsin"><h4>Tax Lot Context</h4></b></p>
+   <div class= "layerSelector" id='tax_lot_context'></div>
+
+   <p><b class="wisconsin"><h4>Neighborhood Context</h4></b></p>
+   <div class= "layerSelector" id='neighborhood_context'></div>
+
+   <p><b class="wisconsin"><h4>Community Indicators</h4></b></p>
+   <div class= "layerSelector" id='community_indicators'></div>
+
+  <!-- </div>
+  <p>This map uses <a href="https://semantic-ui.com" target="_blank">Semantic UI</a> for the dropdowns and menus and is very easy to integrate with CARTO.js and jQuery.</p>
+  </div>
+   -->
+  </div>
+</div>
+
+</body>
+
+<!-- Run the main script -->
+<script src="js/main.js"></script>
+
+</html>

@@ -506,13 +506,7 @@ $('#calc_mc').click(function(){
     dataQuery = scoreQuery + centroidQuery +
                 filter_base + ' order by score desc, cartodb_id limit ' + X;
     // console.log(dataQuery);
-    var result = SQL_CLIENT.request({
-      url: 'https://' + USER_NAME + '.carto.com/api/v2/sql?',
-      params: {
-          q: dataQuery
-      }
-  });
-    console.log('result: ', result);
+
     SQL_CLIENT.request({
       url:'https://' + USER_NAME + '.carto.com/api/v2/sql?',
         params: {
@@ -526,7 +520,7 @@ $('#calc_mc').click(function(){
           // Populate the top ten lots list
 
           result_list = []
-          console.log(topTen)
+          console.log('top places: ', topTen)
           topTen.forEach(function(result,index){
             var geojsonfeature = JSON.parse(result['geojson']);
             result_list.push(geojsonfeature);
@@ -983,6 +977,7 @@ $('#calc_resi').click(function(){
       // console.log(dataQuery);
 
       SQL_CLIENT.request({
+        url:'https://' + USER_NAME + '.carto.com/api/v2/sql?',
           params: {
               q: dataQuery
           }
